@@ -45,8 +45,12 @@ jobs:
 
     - name: Test with pytest
       run: |
-        mamba install pytest
-        pytest
+        mamba install pytest pytest-cov
+        pytest --cov=binette tests/ 
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
     - name: Download test data
       uses: actions/checkout@v3
@@ -64,3 +68,4 @@ jobs:
         cd test_data
         head  expected_results/final_bins_quality_reports.tsv test_results/final_bins_quality_reports.tsv
         python scripts/compare_results.py expected_results/final_bins_quality_reports.tsv test_results/final_bins_quality_reports.tsv
+        
