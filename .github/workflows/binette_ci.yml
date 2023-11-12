@@ -46,7 +46,7 @@ jobs:
     - name: Test with pytest
       run: |
         mamba install pytest pytest-cov
-        pytest --cov=binette --cov-report=xml
+        pytest --cov=binette --cov-report=json
         
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
