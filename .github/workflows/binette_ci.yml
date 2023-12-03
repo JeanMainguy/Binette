@@ -3,7 +3,7 @@
 
 name: Test Binette
 
-on: [push] #to any branch
+on: [pull_request, workflow_dispatch]
 
 jobs:
   build:
@@ -46,12 +46,25 @@ jobs:
     - name: Test with pytest
       run: |
         mamba install pytest pytest-cov
-        pytest --cov=binette --cov-report=json
+        pytest --cov=binette --cov-report=html --cov-report=xml
+
+    - name: Generate coverage badge
+      run: |
+        pip install genbadge[coverage]
+
+
+
+    - name: Publish coverage report to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: htmlcov/
         
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
-      env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+    # Add this
+    - name: Update Coverage Badge
+      # GitHub actions: default branch variable
+      # https://stackoverflow.com/questions/64781462/github-actions-default-branch-variable
+      if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+      uses: we-cli/coverage-badge-action@main
 
     - name: Download test data
       uses: actions/checkout@v3
