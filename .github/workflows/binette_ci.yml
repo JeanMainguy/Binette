@@ -51,20 +51,12 @@ jobs:
     - name: Generate coverage badge
       run: |
         pip install genbadge[coverage]
-
-
+        genbadge coverage -i coverage.xml  -o htmlcov/coverage-badge.svg
 
     - name: Publish coverage report to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4
       with:
         folder: htmlcov/
-        
-    # Add this
-    - name: Update Coverage Badge
-      # GitHub actions: default branch variable
-      # https://stackoverflow.com/questions/64781462/github-actions-default-branch-variable
-      if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
-      uses: we-cli/coverage-badge-action@main
 
     - name: Download test data
       uses: actions/checkout@v3
