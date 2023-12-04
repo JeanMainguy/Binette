@@ -4,6 +4,8 @@
 name: Test Binette
 
 on: [pull_request, workflow_dispatch]
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -52,11 +54,16 @@ jobs:
       run: |
         pip install genbadge[coverage]
         genbadge coverage -i coverage.xml  -o htmlcov/coverage-badge.svg
+        ls htmlcov
+
 
     - name: Publish coverage report to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4
       with:
-        folder: htmlcov/
+        folder: htmlcov
+        force: true
+        branch: gh-pages
+
 
     - name: Download test data
       uses: actions/checkout@v3
