@@ -54,8 +54,9 @@ jobs:
       run: |
         pip install genbadge[coverage]
         genbadge coverage -i coverage.xml  -o htmlcov/coverage-badge.svg
-        ls htmlcov
-
+        ls htmlcov -a
+        rm htmlcov/.gitignore
+        ls htmlcov -a
 
     - name: Publish coverage report to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4
